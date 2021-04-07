@@ -1,0 +1,1 @@
+ALTER TABLE `t_user` ADD COLUMN `phone_number` VARCHAR(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机号' AFTER `email`;

@@ -1,0 +1,31 @@
+spring.profiles.active: dev
+server:
+  port: 12030
+
+spring:
+  application:
+    name: bn-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: passport
+        uri: lb://bn-passport
+        predicates:
+        - Path=/v1/passport/**
+
+
+inner:
+  server:
+    host: 127.0.0.1
+
+eureka:
+  registry:
+    port: 12060
+  instance:
+    hostname: 127.0.0.1
+    status-page-url: http://${inner.server.host}:${server.port}/swagger-ui.html
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.registry.port}/eureka/
+
+

@@ -1,0 +1,72 @@
+# Configure development environment
+server:
+  port: 12010
+  servlet:
+    context-path:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 100Mb
+
+# Spring configuration
+spring:
+  profiles:
+    active: dev
+  application:
+    name: bn-passport
+  session.store-type: none 
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8
+  datasource:
+    name: bn_passport
+    host: 127.0.0.1
+    port: 3306
+    url: jdbc:mysql://${spring.datasource.host}:3306/bn_passport?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 25
+      auto-commit: true
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetim: 1200000
+      connection-test-query: SELECT 1
+  main:
+#    设置为true后，因为FeignClientSpecification的原因，FeignClient注解的configuration参数会被覆盖
+    allow-bean-definition-overriding: true
+
+inner.server.host: 127.0.0.1
+
+cors.allow.orgin: ${CORS_ALLOW_ORIGIN:*}
+     
+beetlsql:
+  basePackage: io.bitnews.passport.dao
+
+#请求处理的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            #设置调用者执行的超时时间
+            timeoutInMilliseconds: 60000
+      timeout:
+        #表示是否开启超时设置
+        enabled: true
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: ２
+  MaxAutoRetries: 1
+
+feign:
+  hystrix:
+    enabled: true

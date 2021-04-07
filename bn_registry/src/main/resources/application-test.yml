@@ -1,0 +1,6 @@
+# Configure test environment
+eureka:
+  client:
+    service-url:
+      defaultZone: http://47.114.32.15:12060/eureka/
+  

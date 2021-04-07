@@ -1,0 +1,18 @@
+# Configure test environment
+spring:
+  datasource:
+    name: bn_news_bg
+    host: 47.114.32.15
+    url: jdbc:mysql://${spring.datasource.host}:3306/bn_news_bg?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: rootPass4!
+
+eureka:
+  registry:
+    port: 80
+  instance:
+    hostname: 47.114.32.15
+    status-page-url: http://47.114.32.15:12021/swagger-ui.html
+  client:
+    service-url:
+      defaultZone: http://47.114.32.15:12060/eureka/

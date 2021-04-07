@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 只需配置好 log.dir 和 projectname 属性 -->
+<configuration debug="false">
+	<property name="log.dir" value="logs" />
+	<property name="projectname" value="bn_news" />
+
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%level：级别 %msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level %logger{50}
+				-%msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="appender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.dir}/${projectname}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${log.dir}/${projectname}_%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>20MB</maxFileSize>
+		</triggeringPolicy>
+		<append>true</append>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level %logger{50}
+				-%msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="errorAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.dir}/${projectname}_error.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${log.dir}/${projectname}_error_%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>20MB</maxFileSize>
+		</triggeringPolicy>
+		<append>true</append>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level %logger{50}
+				-%msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+	</appender>
+
+
+
+	<springProfile name="beta">
+		<logger name="io.bitnews" level="DEBUG" />
+		<root level="INFO">
+			<appender-ref ref="consoleAppender" />
+			<appender-ref ref="appender" />
+			<appender-ref ref="errorAppender" />
+		</root>
+	</springProfile>
+	<springProfile name="dev">
+		<logger name="io.bitnews" level="DEBUG" />
+		<root level="INFO">
+			<appender-ref ref="consoleAppender" />
+			<appender-ref ref="appender" />
+			<appender-ref ref="errorAppender" />
+		</root>
+	</springProfile>
+	<springProfile name="prod">
+		<root level="INFO">
+			<appender-ref ref="consoleAppender" />
+			<appender-ref ref="appender" />
+			<appender-ref ref="errorAppender" />
+		</root>
+	</springProfile>
+	<springProfile name="stg">
+		<logger name="io.bitnews" level="DEBUG" />
+		<root level="INFO">
+			<appender-ref ref="appender" />
+			<appender-ref ref="errorAppender" />
+		</root>
+	</springProfile>
+	<springProfile name="test">
+		<logger name="io.bitnews" level="DEBUG" />
+		<root level="INFO">
+			<appender-ref ref="consoleAppender" />
+			<appender-ref ref="appender" />
+			<appender-ref ref="errorAppender" />
+		</root>
+	</springProfile>
+</configuration>
+
+

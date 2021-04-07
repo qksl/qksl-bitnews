@@ -1,0 +1,74 @@
+# Configure development environment
+server:
+  port: 12090
+  servlet:
+    context-path:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 100Mb
+
+  
+  
+# Remove spring icon
+spring.mvc.favicon.enabled: false
+
+# Spring configuration
+spring:
+  profiles:
+    active: dev
+  application:
+    name: bn-admin
+  session.store-type: none 
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8
+  main:
+    #    设置为true后，因为FeignClientSpecification的原因，FeignClient注解的configuration参数会被覆盖
+    allow-bean-definition-overriding: true
+
+
+beetlsql:
+  mutiple:
+    datasource: newsDS,passportDS,adminDS
+  ds:
+    newsDS:
+      basePackage: io.bitnews.admin.dao.news
+    passportDS:
+      basePackage: io.bitnews.admin.dao.passport
+    adminDS:
+      basePackage: io.bitnews.admin.dao.admin
+
+  
+# Logging configuration
+logging:
+  config: classpath:logback-spring.xml
+
+cors.allow.orgin: ${CORS_ALLOW_ORIGIN:*}
+
+inner.server.host: 127.0.0.1
+
+#请求处理的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            #设置调用者执行的超时时间
+            timeoutInMilliseconds: 60000
+      timeout:
+        #表示是否开启超时设置
+        enabled: true
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: ２
+  MaxAutoRetries: 1
+
+feign:
+  hystrix:
+    enabled: true

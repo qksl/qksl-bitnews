@@ -1,0 +1,89 @@
+# Configure development environment
+server:
+  port: 12021
+
+# Remove spring icon
+spring.mvc.favicon.enabled: false
+
+# Spring configuration
+spring:
+  profiles:
+    active: dev
+  application:
+    name: bn-news-bg
+  session.store-type: none
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: GMT+8
+  datasource:
+    name: bn_news_bg
+    host: 127.0.0.1
+    port: 3306
+    url: jdbc:mysql://${spring.datasource.host}:3306/bn_news_bg?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 3000
+      maximum-pool-size: 200
+      minimum-idle: 10
+      max-lifetime: 28700000
+      pool-name: HikariConnectionPool
+  main:
+    #    设置为true后，因为FeignClientSpecification的原因，FeignClient注解的configuration参数会被覆盖
+    allow-bean-definition-overriding: true
+  quartz:
+    jdbc:
+      initialize-schema: always
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: clusteredScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            clusterCheckinInterval: 10000
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+
+
+# Logging configuration
+logging:
+  config: classpath:logback-spring.xml
+
+inner:
+  server:
+    host: 127.0.0.1
+
+eureka:
+  registry:
+    port: 12060
+  instance:
+    hostname: 127.0.0.1
+    status-page-url: http://${inner.server.host}:${server.port}/swagger-ui.html
+  client:
+    service-url:
+      defaultZone:  http://${eureka.instance.hostname}:${eureka.registry.port}/eureka/
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: ２
+  MaxAutoRetries: 1
+
+feign:
+  hystrix:
+    enabled: true

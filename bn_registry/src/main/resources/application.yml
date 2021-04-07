@@ -1,0 +1,19 @@
+# Configure development environment
+spring:
+  profiles:
+    active: dev
+  application:
+    name: bn_registry
+  session.store-type: none
+
+server:
+  port: 12060
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:12060/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    enable-self-preservation: false

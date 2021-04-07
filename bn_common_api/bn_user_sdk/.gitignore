@@ -1,0 +1,8 @@
+target
+*.settings
+*.project
+.springBeans
+.classpath
+logs
+keystore.p12
+bin

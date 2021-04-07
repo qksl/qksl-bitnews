@@ -1,0 +1,66 @@
+server:
+  port: 12000
+  servlet:
+    context-path:
+
+logging.level.org.springframework.security: DEBUG
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: bn-oauth
+  datasource:
+    name: bn_passport
+    host: 127.0.0.1
+    url: jdbc:mysql://${spring.datasource.host}:3306/bn_passport?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 25
+      auto-commit: true
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetim: 1200000
+      connection-test-query: SELECT 1
+
+    admin:
+      name: bn_admin
+      host: 127.0.0.1
+      url: jdbc:mysql://${spring.datasource.host}:3306/bn_admin?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+
+
+  redis:
+      database: 5
+      host: 127.0.0.1
+      port: 6379
+      password:
+      timeout: 2000
+      lettuce:
+        pool:
+          max-total: 200
+          max-idle: 100
+          min-idle: 10
+          max-wait: 3000
+          test-on-borrow: true
+
+eureka:
+  registry:
+    port: 12060
+  instance:
+    hostname: 127.0.0.1
+    status-page-url: http://127.0.0.1:${server.port}/swagger-ui.html
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.registry.port}/eureka/
+
+
+beetlsql:
+  basePackage: io.bitnews.oauth.dao
+

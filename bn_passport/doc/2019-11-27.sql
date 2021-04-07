@@ -1,0 +1,2 @@
+ALTER TABLE `t_user` ADD COLUMN `tx_signature` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '个人签名' AFTER `tx_picture`;
+ALTER TABLE `t_user` ADD COLUMN `nick_name` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '昵称' AFTER `username`;
